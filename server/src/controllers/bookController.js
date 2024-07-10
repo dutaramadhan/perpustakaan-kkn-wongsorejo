@@ -18,6 +18,7 @@ const uploadBook = async (req, res) => {
                 title: req.body.title,
                 author: req.body.author,
                 publisher: req.body.publisher,
+                year: req.body.year,
                 category: req.body.category.split(',').map(category => category.trim()),
                 filename: filename,
                 contentType: req.file.mimetype,
@@ -35,7 +36,7 @@ const uploadBook = async (req, res) => {
 
 const getFiles = async (req, res) => {
     try {
-        const books = await bookModel.find().select('_id title author publisher category');
+        const books = await bookModel.find().select('_id title author publisher year category');
         
         if (!books || books.length === 0) {
             return res.status(404).json({ error: 'No files exist' });
@@ -59,6 +60,46 @@ const getFile = async (req, res) => {
     // });
 };
 
+const editBook = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updatedData = {
+            title: req.body.title,
+            author: req.body.author,
+            publisher: req.body.publisher,
+            year: req.body.year,
+            category: req.body.category.split(',').map(category => category.trim()),
+        };
+
+        const updatedBook = await bookModel.findByIdAndUpdate(id, updatedData, { new: true, runValidators: true }).select('_id title author publisher year category');
+
+        if (!updatedBook) {
+            return res.status(404).json({ error: 'Book not found' });
+        }
+
+        return res.status(200).json({ message: 'Book updated successfully', book: updatedBook });
+    } catch (err) {
+        console.error('Error updating book:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+const deleteBook = async (req, res) =>{
+    try {
+        const id = req.params.id;
+        const deletedBook = await bookModel.findByIdAndDelete(id);
+
+        if (!deletedBook) {
+            return res.status(404).json({ error: 'Book not found' });
+        }
+
+        return res.status(200).json({ message: 'Book deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting book:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 const displayFile = async (req, res) => {
     try {
         const book = await bookModel.findById(req.params.id);
@@ -81,5 +122,7 @@ module.exports = {
     uploadBook,
     getFiles,
     getFile,
+    editBook,
+    deleteBook,
     displayFile
 };

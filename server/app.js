@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const setupDB = require('./src/models/setupDB')
 const bookRouter = require('./src/routes/bookRoute');
+const categoryRouter = require('./src/routes/categoryRoute');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -18,6 +18,8 @@ const port = process.env.PORT;
 setupDB();
 
 app.use('/books', bookRouter);
+
+app.use('/categories', categoryRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

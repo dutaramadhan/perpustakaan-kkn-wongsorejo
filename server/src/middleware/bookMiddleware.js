@@ -1,6 +1,6 @@
 exports.verifyApiKey = async (req, res, next) => {
     try{
-      const apiKey = req.headers['api-key'];
+      const apiKey = req.headers['x-api-key'];
       if(apiKey === process.env.API_KEY){
         next();
       } else {
