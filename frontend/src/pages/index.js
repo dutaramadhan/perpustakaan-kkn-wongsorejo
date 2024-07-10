@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <main>
-      <Navbar />
+      <Navbar Text={"Perpustakaan Digital"}/>
       <Footer />
     </main>
   );
