@@ -13,7 +13,7 @@ export default function Navbar({Text}) {
   };
 
   return (
-    <nav className="bg-blue-500 fixed top-0 py-5 px-[20px] md:px-[50px] lg:px-[30px] flex h-[70px] w-full text-black items-center">
+    <nav className="z-50 bg-blue-500 fixed top-0 py-5 px-[20px] md:px-[50px] lg:px-[30px] flex h-[70px] w-full text-black items-center">
       <Hamburger onClick={toggleHamburgerBar} />
       <Sidebar isOpen={isHamburgerOpen} onClick={toggleHamburgerBar} />
       <Link href="/">
