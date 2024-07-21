@@ -9,7 +9,6 @@ export default function Navbar({Text}) {
 
   const toggleHamburgerBar = () => {
     setIsHamburgerOpen(!isHamburgerOpen);
-    console.log("Open");
   };
 
   return (

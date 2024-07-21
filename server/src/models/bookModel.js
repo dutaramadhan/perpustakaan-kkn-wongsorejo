@@ -11,7 +11,8 @@ const bookSchema = new Schema({
     filename: { type: String, required: true },
     contentType: { type: String, required: true },
     content: {type: Buffer, required: true},
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+    thumbnail: { type: Buffer, required: true}
 });
 
 module.exports = mongoose.model('Book', bookSchema);
