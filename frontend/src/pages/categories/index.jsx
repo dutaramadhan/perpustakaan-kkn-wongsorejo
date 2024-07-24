@@ -1,9 +1,10 @@
 import CategoryCard from "@/components/CategoryCard";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
+import Footer from "@/components/Footer";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+
 
 export default function Category() {
     const [categories, setCategories] = useState([]);
@@ -43,12 +44,13 @@ export default function Category() {
     <>
     <Navbar Text="Kategori"/>
     <main className="flex min-h-screen flex-col py-20">
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 gap-5 p-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
         {categories.map((category, index) => {
           return <CategoryCard key={category._id} category={category} />;
         })}
       </div>
     </main>
+    <Footer />
     </>
   );
 }

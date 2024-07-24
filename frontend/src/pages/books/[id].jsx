@@ -39,7 +39,7 @@ export default function BookPage() {
 
         setCategoryNames(categoryNames);
       } catch (error) {
-        setError('Error fetching data');
+        setError(error.message);
       } finally {
         setLoading(false);
       }

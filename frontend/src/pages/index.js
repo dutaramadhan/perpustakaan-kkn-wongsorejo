@@ -7,7 +7,6 @@ import Sidebar from "@/components/Sidebar";
 import Loading from "@/components/Loading";
 
 export default function Home() {
-  const [isHamburgerOpen, setHamburgerOpen] = useState(false);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,7 +21,7 @@ export default function Home() {
               });
               setBooks(response.data);
           } catch (error) {
-              setError('Error fetching data');
+              setError(error.message);
           } finally {
               setLoading(false);
           }
@@ -41,7 +40,7 @@ export default function Home() {
 
   return (
     <main>
-      <Navbar Text={"Perpustakaan Digital"} />
+      <Navbar Text={"Perpustakaan Digital"}/>
       <div className="z-10 flex min-h-screen flex-col items-center py-20">
         <div className="flex-grow">
           <div className="grid grid-cols-2 gap-5 p-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
