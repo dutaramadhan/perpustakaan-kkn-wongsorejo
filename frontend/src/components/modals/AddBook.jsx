@@ -3,138 +3,145 @@ import Modal from "react-modal";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
+import Select from "react-select";
 
-export default function AddBookModal({
-  isOpen,
-  onClose,
-  setOpenModal
-}) {
-    const [title, setTitle] = useState("");
-    const [author, setAuthor] = useState("");
-    const [category, setCategory] = useState("");
-    const [publisher, setPublisher] = useState("");
-    const [year, setYear] = useState("");
-    const [pdfFile, setPdfFile] = useState(null);
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(false);
+export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoading }) {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [category, setCategory] = useState([]);
+  const [publisher, setPublisher] = useState("");
+  const [year, setYear] = useState("");
+  const [pdfFile, setPdfFile] = useState(null);
+  const [categories, setCategories] = useState([]);
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-          try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/categories/`, {
-                headers: {
-                    "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-                },
-                });
-            setCategories(response.data);
-          } catch (error) {
-            console.error("Failed to fetch categories", error);
-          }
-        };
-        fetchCategories();
-      }, []);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("author", author);
-        formData.append("category", category);
-        formData.append("publisher", publisher);
-        formData.append("year", year);
-        formData.append("file", pdfFile);
-
-        try {
-            setLoading(true);
-            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/books/upload`, formData, {
-            headers: {
-                "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-            },
-            });
-            toast.success("Book added successfully!");
-            setOpenModal(false);
-        } catch (error) {
-            toast.error("Failed to add book. Please try again.");
-        }
-        finally{
-            setLoading(false);
-        }
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/categories/`, {
+          headers: {
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+          },
+        });
+        setCategories(response.data.map(cat => ({ value: cat._id, label: cat.data })));
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
+      }
     };
+    fetchCategories();
+  }, []);
 
-    if(loading){
-        return <Loading />
+  const resetForm = () => {
+    setTitle("");
+    setAuthor("");
+    setCategory([]);
+    setPublisher("");
+    setYear("");
+    setPdfFile(null);
+  };
+  
+  useEffect(() => {
+    if(!isOpen){
+      resetForm();
     }
+  }, [isOpen]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("author", author);
+    formData.append("category", category.map(cat => cat.value).join(','));
+    formData.append("publisher", publisher);
+    formData.append("year", year);
+    formData.append("file", pdfFile);
+
+    try {
+      setIsLoading(true);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/books/upload`, formData, {
+        headers: {
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+      });
+      resetForm();
+      setOpenModal(false);
+      toast.success("Book added successfully!");
+    } catch (error) {
+      console.log("Error adding book:", error.response || error.message);
+      toast.error("Failed to add book. Please try again.");
+    } 
+  };
+  
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      className="w-screen h-screen flex justify-center items-center absolute z-50 overflow-visible"
+      className="w-screen h-screen flex justify-center items-center absolute overflow-visible"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-50"
     >
       <div className="w-full h-full absolute top-0" onClick={() => setOpenModal(false)}></div>
-      <div className="bg-blue-500 w-[90%] md:w-1/2 md:max-w-[600px] lg:max-w-[800px] p-8 rounded-[10px] relative z-[10]">
-        <h1 className="text-yellow text-[30px] font-semibold text-center">
+      <div className="bg-white w-[90%] md:w-1/2 lg:w-1/3 p-8 rounded-lg relative z-60 max-h-[90%] overflow-y-auto shadow-lg transform transition-all duration-500 ease-in-out">
+        <h1 className="text-black text-3xl font-semibold text-center mb-4">
           Tambah Buku
         </h1>
-        <form onSubmit={handleSubmit} 
-            className="bg-yellow px-8 rounded-[5px] text-[17px] flex flex-col gap-4">
-            <label className="flex flex-col gap-2">
-                Upload PDF
-                <input
-                type="file"
-                accept="application/pdf"
-                onChange={(e) => setPdfFile(e.target.files[0])}
-                className="focus:outline px-2 py-1 rounded-[4px]"
-                />
-            </label>
-          <label className="flex flex-col gap-2">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-gray-50 p-6 rounded-lg text-lg flex flex-col gap-1"
+        >
+          <label className="flex flex-col gap-1">
+            Upload PDF
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={(e) => setPdfFile(e.target.files[0])}
+              className="focus:outline-none px-4 py-2 rounded-lg border border-gray-300"
+            />
+          </label>
+          <label className="flex flex-col gap-1">
             Judul Buku
             <input
-              className="focus:outline px-2 py-1 rounded-[4px]"
+              className="focus:outline-none px-4 py-2 rounded-lg border border-gray-300"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </label>
-          <label className="flex flex-col gap-2">
+          <label className="flex flex-col gap-1">
             Penulis
             <input
-              className="focus:outline px-2 py-1 rounded-[4px]"
+              className="focus:outline-none px-4 py-2 rounded-lg border border-gray-300"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
             />
           </label>
-          <label className="flex flex-col gap-2">
+          <label className="flex flex-col gap-1">
             Kategori
-            <select
-              className="focus:outline px-2 py-1 rounded-[4px]"
+            <Select
+              isMulti
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option value="">Pilih Kategori</option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>{cat.data}</option>
-              ))}
-            </select>
+              onChange={setCategory}
+              options={categories}
+              className="focus:outline-none px-4 py-2 rounded-lg border border-gray-300"
+            />
           </label>
-          <label className="flex flex-col gap-2">
+          <label className="flex flex-col gap-1">
             Penerbit
             <input
-              className="focus:outline px-2 py-1 rounded-[4px]"
+              className="focus:outline-none px-4 py-2 rounded-lg border border-gray-300"
               value={publisher}
               onChange={(e) => setPublisher(e.target.value)}
             />
           </label>
-          <label className="flex flex-col gap-2">
+          <label className="flex flex-col gap-1">
             Tahun Terbit
             <input
-              className="focus:outline px-2 py-1 rounded-[4px]"
+              className="focus:outline-none px-4 py-2 rounded-lg border border-gray-300"
               value={year}
               onChange={(e) => setYear(e.target.value)}
             />
           </label>
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-4">
             <button
-              className="w-max rounded-[10px] py-2 px-3 bg-purple-200 hover:bg-[#9676B0] transition duration-200 font-semibold text-black"
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
               type="submit"
             >
               Tambah

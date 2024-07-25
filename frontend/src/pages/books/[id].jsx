@@ -1,15 +1,16 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import BackButton from "@/components/BackButton";
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
+import { toast } from "react-toastify";
 
 export default function BookPage() {
   const router = useRouter();
   const [book, setBook] = useState({});
   const [categoryNames, setCategoryNames] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -39,7 +40,7 @@ export default function BookPage() {
 
         setCategoryNames(categoryNames);
       } catch (error) {
-        setError(error.message);
+        toast.error(error.message);
       } finally {
         setLoading(false);
       }
@@ -54,12 +55,9 @@ export default function BookPage() {
     return <Loading />;
   }
 
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
     <main className="flex flex-col items-center min-h-screen py-10">
+      <BackButton />
       <div className="w-[150px] aspect-[3/4] grid place-items-center" style={{ backgroundImage: `url(data:image/png;base64,${book.thumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
       <div className="w-1/4">
         <h1 className="font-bold text-center text-[20px] mb-3">{book.title}</h1>
@@ -89,6 +87,7 @@ export default function BookPage() {
           Baca
         </button>
       </div>
+      <Footer />
     </main>
   );
 }

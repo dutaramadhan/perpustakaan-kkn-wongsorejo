@@ -8,12 +8,12 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getSession } from "next-auth/react";
 import axios from 'axios';
+import { toast } from "react-toastify";
 
 export default function Admin() {
   const router = useRouter();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function Admin() {
               });
               setBooks(response.data);
           } catch (error) {
-              setError(error.message);
+              toast.error(error.message);
           } finally {
               setLoading(false);
           }
@@ -50,19 +50,15 @@ export default function Admin() {
       return <Loading />;
   }
 
-  if (error) {
-      return <p>{error}</p>;
-  }
-
   return (
     <main className="relative min-h-screen flex flex-col">
-    <AddBookModal isOpen={openModal} setOpenModal={setOpenModal} />
+    <AddBookModal isOpen={openModal} setOpenModal={setOpenModal} setIsLoading={setLoading}/>
     <Navbar Text={"Halaman Admin"} mode={"admin"} />
     <div className="flex-grow flex flex-col items-center py-20">
       <div className="w-full flex-grow overflow-auto">
         <div className="grid grid-cols-2 gap-5 p-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
           {books.map((book) => (
-            <BookCard key={book._id} book={book} />
+            <BookCard key={book._id} book={book} href={`/admin/books/${book._id}`}/>
           ))}
         </div>
       </div>

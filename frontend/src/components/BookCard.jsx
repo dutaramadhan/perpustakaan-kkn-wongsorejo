@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-export default function BookCard({ book }) {
+export default function BookCard({ book, href }) {
   return (
-    <Link href={`/books/${book._id}`} className="transition w-full block cursor-pointer hover:drop-shadow-[0_0_10px_rgb(139,92,246)]">
+    <Link href={href} className="transition w-full block cursor-pointer hover:drop-shadow-[0_0_10px_rgb(139,92,246)]">
       <div className="relative w-full aspect-[3/4] h-[250px] bg-gradient-to-br from-violet-500 to-blue-500 shadow-xl border-solid border-2">
         <div
           className="absolute inset-0"

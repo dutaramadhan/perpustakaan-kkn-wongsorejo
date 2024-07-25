@@ -3,8 +3,8 @@ import axios from 'axios';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BookCard from "@/components/BookCard";
-import Sidebar from "@/components/Sidebar";
 import Loading from "@/components/Loading";
+import { toast } from 'react-toastify';
 
 export default function Home() {
   const [books, setBooks] = useState([]);
@@ -21,7 +21,7 @@ export default function Home() {
               });
               setBooks(response.data);
           } catch (error) {
-              setError(error.message);
+              toast.error(error.message);
           } finally {
               setLoading(false);
           }
@@ -30,22 +30,18 @@ export default function Home() {
       fetchBooks();
   }, []);
 
-    if (loading) {
-        return <Loading />;
-    }
-
-    if (error) {
-        return <p>{error}</p>;
-    }
+  if (loading) {
+      return <Loading />;
+  }
 
   return (
     <main>
       <Navbar Text={"Perpustakaan Digital"}/>
-      <div className="z-10 flex min-h-screen flex-col items-center py-20">
-        <div className="flex-grow">
+      <div className="flex-grow flex flex-col items-center py-20">
+        <div className="w-full flex-grow overflow-auto">
           <div className="grid grid-cols-2 gap-5 p-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
             {books.map((book) => (
-              <BookCard key={book._id} book={book} />
+              <BookCard key={book._id} book={book} href={`/books/${book._id}`}/>
             ))}
           </div>
         </div>

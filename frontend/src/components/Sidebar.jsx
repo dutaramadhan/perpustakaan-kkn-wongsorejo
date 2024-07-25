@@ -6,12 +6,13 @@ export default function Sidebar({ isOpen, mode }) {
   const { pathname } = router;
 
   const isActive = (route) => pathname === route;
+  const isActiveCategories = (route) => pathname.startsWith(route);
 
   return (
     <div
       className={`fixed top-[70px] bottom-[64px] left-0 lg:w-[20%] w-[35%] h-[calc(100%-133px)] bg-blue-500 text-white transform ${
         isOpen ? "translate-x-0" : "-translate-x-full"
-      } transition-transform duration-300 ease-in-out z-50 flex flex-col justify-between`}
+      } transition-transform duration-300 ease-in-out z-[30] flex flex-col justify-between`}
     >
 
           {mode !== "admin" && (
@@ -45,7 +46,7 @@ export default function Sidebar({ isOpen, mode }) {
               <Link
                 href="/categories"
                 className={`relative flex flex-row items-center h-11 text-black focus:outline-none hover:bg-blue-300 hover:text-gray-800 pr-6 ${
-                  isActive("/categories") ? "bg-blue-200 text-black" : ""
+                  isActiveCategories("/categories") ? "bg-blue-200 text-black" : ""
                 }`}
               >
                 <span className="inline-flex justify-center items-center ml-4">
@@ -123,7 +124,7 @@ export default function Sidebar({ isOpen, mode }) {
             <Link
               href="/admin/categories"
               className={`relative flex flex-row items-center h-11 text-black focus:outline-none hover:bg-blue-300 hover:text-gray-800 pr-6 ${
-                isActive("/admin/categories") ? "bg-blue-200 text-black" : ""
+                isActiveCategories("/admin/categories") ? "bg-blue-200 text-black" : ""
               }`}
             >
               <span className="inline-flex justify-center items-center ml-4">
