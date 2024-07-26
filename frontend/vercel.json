@@ -1,0 +1,27 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "next.config.js",
+        "use": "@vercel/next"
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/auth/:path*",
+        "destination": "/api/auth/:path*"
+      },
+      {
+        "source": "/admin/:path*",
+        "destination": "/admin/:path*"
+      }
+    ],
+    "env": {
+        "NEXT_PUBLIC_ADMIN_USERNAME": "@next_public_admin_username",
+        "NEXT_PUBLIC_ADMIN_PASSWORD": "@next_public_admin_password",
+        "NEXT_PUBLIC_API_URL": "@next_public_api_url",
+        "NEXT_PUBLIC_API_KEY": "@next_public_api_key",
+        "NEXTAUTH_SECRET": "@nextauth_secret"
+    }
+  }
+  
