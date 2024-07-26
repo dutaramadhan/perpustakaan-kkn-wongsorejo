@@ -56,6 +56,7 @@ export default function AdminCategories() {
         }
       });
       setCategories(categories.filter(category => category._id !== id));
+      toast.success("Kategori Berhasil Dihapus")
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -73,12 +74,14 @@ export default function AdminCategories() {
             'x-api-key': process.env.NEXT_PUBLIC_API_KEY,
           }
         });
+        toast.success("Kategori Berhasil Diperbarui")
       } else {
         await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/categories/add`, category, {
           headers: {
             'x-api-key': process.env.NEXT_PUBLIC_API_KEY,
           }
         });
+        toast.success("Kategori Berhasil Ditambahkan")
       }
       setOpenModal(false);
       setSelectedCategory(null);

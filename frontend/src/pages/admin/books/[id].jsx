@@ -92,7 +92,7 @@ export default function BookPage() {
       toast.success("Buku berhasil dihapus");
       router.push("/admin/");
     } catch (error) {
-      toast.error("Gagal menghapus buku. Silakan coba lagi.");
+      toast.error("Gagal Menghapus Buku. Silahkan Coba Lagi.");
     }
   };
 
@@ -112,9 +112,9 @@ export default function BookPage() {
       setBook({ ...book, ...updatedBook });
       setIsEditing(false);
       setIsEditModalOpen(false);
-      toast.success("Buku berhasil diperbarui");
+      toast.success("Buku Berhasil Diperbarui");
     } catch (error) {
-      toast.error("Gagal memperbarui buku. Silakan coba lagi.");
+      toast.error("Gagal Memperbarui Buku. Silakan Coba Lagi!");
     } finally {
         setLoading(false);
     }

@@ -24,7 +24,7 @@ export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoadi
         });
         setCategories(response.data.map(cat => ({ value: cat._id, label: cat.data })));
       } catch (error) {
-        console.error("Failed to fetch categories", error);
+        console.error("Gagal untuk Mendapatkan Data", error);
       }
     };
     fetchCategories();
@@ -56,6 +56,7 @@ export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoadi
     formData.append("file", pdfFile);
 
     try {
+      console.log(formData)
       setIsLoading(true);
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/books/upload`, formData, {
         headers: {
@@ -64,10 +65,10 @@ export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoadi
       });
       resetForm();
       setOpenModal(false);
-      toast.success("Book added successfully!");
+      toast.success("Buku Berhasil Ditambahkan");
     } catch (error) {
       console.log("Error adding book:", error.response || error.message);
-      toast.error("Failed to add book. Please try again.");
+      toast.error("Gagal untuk Menambahkan Buku. Silahkan Coba Lagi!");
     } 
   };
   
