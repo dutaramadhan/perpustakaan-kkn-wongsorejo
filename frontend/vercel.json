@@ -17,11 +17,11 @@
       }
     ],
     "env": {
-        "NEXT_PUBLIC_ADMIN_USERNAME": "@next_public_admin_username",
-        "NEXT_PUBLIC_ADMIN_PASSWORD": "@next_public_admin_password",
-        "NEXT_PUBLIC_API_URL": "@next_public_api_url",
-        "NEXT_PUBLIC_API_KEY": "@next_public_api_key",
-        "NEXTAUTH_SECRET": "@nextauth_secret"
+        "NEXT_PUBLIC_ADMIN_USERNAME": "@NEXT_PUBLIC_ADMIN_USERNAME",
+        "NEXT_PUBLIC_ADMIN_PASSWORD": "@NEXT_PUBLIC_ADMIN_PASSWORD",
+        "NEXT_PUBLIC_API_URL": "@NEXT_PUBLIC_API_URL",
+        "NEXT_PUBLIC_API_KEY": "@NEXT_PUBLIC_API_KEY",
+        "NEXTAUTH_SECRET": "@NEXTAUTH_SECRET"
     }
   }
   
