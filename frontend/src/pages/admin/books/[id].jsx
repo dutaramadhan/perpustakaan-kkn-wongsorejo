@@ -217,7 +217,7 @@ export default function BookPage() {
               Edit
             </button>
             <button
-              className="w-full bg-red-400 py-2 mt-2 cursor-pointer hover:bg-red-500 rounded-md mb-10"
+              className="w-full bg-red-400 py-2 mt-2 cursor-pointer hover:bg-red-500 rounded-md mb-20"
               onClick={() => setIsDeleteModalOpen(true)}
             >
               Hapus

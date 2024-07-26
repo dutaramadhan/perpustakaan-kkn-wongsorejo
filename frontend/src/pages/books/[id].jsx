@@ -74,7 +74,7 @@ export default function BookPage() {
         <h2 className="text-center text-[16px]">{categoryNames.join(", ")}</h2>
         <hr className="my-1" />
         <button 
-          className="w-full bg-green-400 py-2 mt-10 cursor-pointer hover:bg-green-500 rounded-md"
+          className="w-full bg-green-400 py-2 mt-10 cursor-pointer hover:bg-green-500 rounded-md mb-20"
           onClick={async () => {
             try {
               router.push(`${process.env.NEXT_PUBLIC_API_URL}/books/file/${book._id}`)
