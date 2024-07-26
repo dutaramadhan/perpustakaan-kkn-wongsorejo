@@ -1,6 +1,7 @@
 const bookModel = require('../models/bookModel');
 const { createCanvas } = require('canvas');
 const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
+pdfjsLib.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/legacy/build/pdf.worker.entry');
 
 const generateThumbnail = async (pdfBuffer) => {
     const uint8Array = new Uint8Array(pdfBuffer);
@@ -34,7 +35,7 @@ const uploadBook = async (req, res) => {
         if (existingFile) {
             return res.status(409).json({ message: 'Duplicate PDF file detected' });
         }
-        
+
         const thumbnail = await generateThumbnail(pdf_content);
 
         const newBook = new bookModel({
@@ -49,7 +50,7 @@ const uploadBook = async (req, res) => {
             thumbnail: thumbnail
         });
         await newBook.save();
-        
+
         return res.status(201).json({ message: 'PDF book uploaded successfully' });
     }
     catch (err) {
