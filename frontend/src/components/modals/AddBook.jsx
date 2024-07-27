@@ -70,6 +70,9 @@ export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoadi
       console.log("Error adding book:", error.response || error.message);
       toast.error("Gagal untuk Menambahkan Buku. Silahkan Coba Lagi!");
     } 
+    finally {
+      setIsLoading(false);
+    }
   };
   
 

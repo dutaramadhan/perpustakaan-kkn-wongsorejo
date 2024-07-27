@@ -90,9 +90,12 @@ export default function BookPage() {
         }
       });
       toast.success("Buku berhasil dihapus");
-      router.push("/admin/");
     } catch (error) {
       toast.error("Gagal Menghapus Buku. Silahkan Coba Lagi.");
+    }
+    finally {
+      router.push("/admin/");
+      setLoading(false);
     }
   };
 

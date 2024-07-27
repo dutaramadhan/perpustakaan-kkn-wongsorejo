@@ -7,7 +7,7 @@ export default function BookCard({ book, href }) {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(data:image/png;base64,${book.thumbnail})`,
+            backgroundImage: `url(data:image/jpeg;base64,${book.thumbnail})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}

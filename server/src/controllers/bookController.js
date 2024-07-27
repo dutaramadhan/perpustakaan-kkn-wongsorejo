@@ -2,6 +2,7 @@ const bookModel = require('../models/bookModel');
 const { createCanvas } = require('canvas');
 const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
 pdfjsLib.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/legacy/build/pdf.worker.entry');
+const sharp = require('sharp');
 
 const generateThumbnail = async (pdfBuffer) => {
     const uint8Array = new Uint8Array(pdfBuffer);
@@ -10,7 +11,8 @@ const generateThumbnail = async (pdfBuffer) => {
     const pdf = await loadingTask.promise;
     const page = await pdf.getPage(1);
 
-    const viewport = page.getViewport({ scale: 1 });
+    const scale = 0.2;
+    const viewport = page.getViewport({ scale: scale });
     const canvas = createCanvas(viewport.width, viewport.height);
     const context = canvas.getContext('2d');
 
@@ -20,8 +22,35 @@ const generateThumbnail = async (pdfBuffer) => {
     };
 
     await page.render(renderContext).promise;
-    return canvas.toBuffer('image/png');
+
+    const pngBuffer = canvas.toBuffer('image/png');
+
+    const jpegBuffer = await sharp(pngBuffer)
+        .jpeg({ quality: 80 }) 
+        .toBuffer();
+
+    return jpegBuffer;
 };
+
+// const generateThumbnail = async (pdfBuffer) => {
+//     const uint8Array = new Uint8Array(pdfBuffer);
+
+//     const loadingTask = pdfjsLib.getDocument({ data: uint8Array });
+//     const pdf = await loadingTask.promise;
+//     const page = await pdf.getPage(1);
+
+//     const viewport = page.getViewport({ scale: 1 });
+//     const canvas = createCanvas(viewport.width, viewport.height);
+//     const context = canvas.getContext('2d');
+
+//     const renderContext = {
+//         canvasContext: context,
+//         viewport: viewport
+//     };
+
+//     await page.render(renderContext).promise;
+//     return canvas.toBuffer('image/png');
+// };
 
 const uploadBook = async (req, res) => {
     try {
@@ -60,7 +89,7 @@ const uploadBook = async (req, res) => {
 
 const getFiles = async (req, res) => {
     try {
-        const books = await bookModel.find().select('_id title author year thumbnail');
+        const books = await bookModel.find().select('_id title author year thumbnail').sort('title');
 
         if (!books || books.length === 0) {
             return res.status(404).json({ error: 'No files exist' });
