@@ -13,6 +13,7 @@ export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoadi
   const [year, setYear] = useState("");
   const [pdfFile, setPdfFile] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [disable, setDisable] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -37,13 +38,25 @@ export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoadi
     setPublisher("");
     setYear("");
     setPdfFile(null);
+    setDisable(false); // Enable the submit button on form reset
   };
   
   useEffect(() => {
-    if(!isOpen){
+    if (!isOpen) {
       resetForm();
     }
   }, [isOpen]);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.size > 4 * 1024 * 1024) {
+      toast.error("Ukuran file tidak boleh lebih dari 4MB");
+      setDisable(true);
+    } else {
+      setPdfFile(file);
+      setDisable(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,7 +87,6 @@ export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoadi
       setIsLoading(false);
     }
   };
-  
 
   return (
     <Modal
@@ -97,7 +109,7 @@ export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoadi
             <input
               type="file"
               accept="application/pdf"
-              onChange={(e) => setPdfFile(e.target.files[0])}
+              onChange={handleFileChange}
               className="focus:outline-none px-4 py-2 rounded-lg border border-gray-300"
             />
           </label>
@@ -145,8 +157,9 @@ export default function AddBookModal({ isOpen, onClose, setOpenModal, setIsLoadi
           </label>
           <div className="flex justify-end mt-4">
             <button
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+              className={`px-6 py-3 rounded-lg transition duration-300 ${disable ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer'}`}
               type="submit"
+              disabled={disable}
             >
               Tambah
             </button>
