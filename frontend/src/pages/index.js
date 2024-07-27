@@ -37,17 +37,9 @@ export default function Home() {
     <>
       <Head>
         <title>Perpustakaan Digital KKN PPM UGM Wongsorejo 2024</title>
-        <meta name="description" content="Selamat datang di Perpustakaan Digital KKN UGM Wongsorejo 2024. Temukan berbagai buku dan penulis di sini." />
+        <meta name="description" content="Selamat datang di Perpustakaan Digital KKN PPM UGM Wongsorejo 2024. Temukan berbagai buku di sini." />
         <meta name="keywords" content="perpustakaan digital, KKN UGM, Wongsorejo, buku, penulis, membaca" />
-        <meta name="author" content="KKN UGM Wongsorejo 2024" />
-        <meta property="og:title" content="Perpustakaan Digital KKN UGM Wongsorejo 2024" />
-        <meta property="og:description" content="Selamat datang di Perpustakaan Digital KKN UGM Wongsorejo 2024. Temukan berbagai buku dan penulis di sini." />
-        <meta property="og:image" content="/images/library-og-image.jpg" />
-        <meta property="og:url" content="https://www.perpustakaan-wongsorejo-ugm.com" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Perpustakaan Digital KKN UGM Wongsorejo 2024" />
-        <meta name="twitter:description" content="Selamat datang di Perpustakaan Digital KKN UGM Wongsorejo 2024. Temukan berbagai buku dan penulis di sini." />
-        <meta name="twitter:image" content="/images/library-twitter-image.jpg" />
+        <meta name="author" content="KKN PPM UGM Wongsorejo 2024" />
       </Head>
       <main>
         <Navbar Text={"Perpustakaan Digital"}/>
